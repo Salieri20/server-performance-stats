@@ -6,4 +6,20 @@ echo -e "Memory Usage |"
 echo "--------------"
 echo -e "Total\t\tUsed\t\tAvailable"
 free -h | awk 'NR==2 {print $2 "\t\t" $3 "\t\t"  $7}'
-free | awk 'NR==2 {printf "100%%\t\t%0.2f%%\t\t%0.2f%%\n", ($3/$2)*100, ($7/$2)*100}' 
+free | awk 'NR==2 {printf "100%%\t\t%0.2f%%\t\t%0.2f%%\n", ($3/$2)*100, ($7/$2)*100}'
+
+echo "---------------------------------"
+echo -e "Top 5 processes by memory usage |"
+echo "---------------------------------"
+ps -eo pid,comm,pmem --sort=-pmem | head -n 6
+
+echo "-----------"
+echo -e "CPU Usage |"
+echo "-----------"
+
+echo "------------------------------"
+echo -e "Top 5 processes by CPU usage |"
+echo "------------------------------"
+ps -eo pid,comm,pcpu --sort=-pcpu | head -n 6
+
+
