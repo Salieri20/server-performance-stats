@@ -17,6 +17,22 @@ echo "-----------------"
 echo -e "Total CPU Usage |"
 echo "-----------------"
 
+read -r cpu user1 nice1 system1 idle1 iowait1 irq1 softirq1 steal1 guest1 guest_nice1 <<< "$(grep '^cpu ' /proc/stat)"
+
+sleep 1
+
+read -r cpu user2 nice2 system2 idle2 iowait2 irq2 softirq2 steal2 guest2 guest_nice2 <<< "$(grep '^cpu ' /proc/stat)"
+
+idle=$(( (idle2 + iowait2) - (idle1 + iowait1) ))
+total=$(( (user2+nice2+system2+irq2+softirq2+steal2+idle) - (user1+nice1+system1+irq1+softirq1+steal1) ))
+
+cpu_total=$((100 * (total-idle) / total))
+cpu_idle=$((100 * idle / total))
+cpu_user=$((100 * ((user2+nice2) - (user1+nice1)) / total))
+cpu_system=$((100 * ((system2+irq2+softirq2) - (system1+irq1+softirq1)) / total))
+
+echo "CPU Usage: Total=$cpu_total% | User=$cpu_user% | System=$cpu_system% | Idle=$cpu_idle%"
+
 echo "------------------------------"
 echo -e "Top 5 processes by CPU usage |"
 echo "------------------------------"
