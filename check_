@@ -1,0 +1,36 @@
+echo "===== SERVER PERFORMANCE STATS ====="
+echo ""
+
+# CPU Usage
+echo ">>> Total CPU Usage:"
+# Get CPU idle percentage and calculate usage
+cpu_idle=$(top -bn1 | grep "Cpu(s)" | awk '{print $8}' | cut -d"." -f1)
+cpu_usage=$((100 - cpu_idle))
+echo "CPU Usage: $cpu_usage%"
+
+echo ""
+# Memory Usage
+echo ">>> Total Memory Usage:"
+# Get memory info using free command
+mem_info=$(free -m | awk 'NR==2{printf "Used: %sMB / Total: %sMB (%.2f%%)", $3, $2, $3*100/$2 }')
+echo "$mem_info"
+
+echo ""
+# Disk Usage
+echo ">>> Disk Usage:"
+# Show disk usage for root filesystem
+disk_info=$(df -h / | awk 'NR==2{printf "Used: %s / Total: %s (%s)", $3, $2, $5 }')
+echo "$disk_info"
+
+echo ""
+# Top 5 processes by CPU usage
+echo ">>> Top 5 Processes by CPU Usage:"
+ps -eo pid,comm,%cpu --sort=-%cpu | head -n 6
+
+echo ""
+# Top 5 processes by Memory usage
+echo ">>> Top 5 Processes by Memory Usage:"
+ps -eo pid,comm,%mem --sort=-%mem | head -n 6
+
+echo ""
+echo "===== END OF REPORT ====="

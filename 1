@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo "==================  Server Stats ===================="
+echo "--------------"
+echo -e "Memory Usage |"
+echo "--------------"
+echo -e "Total\t\tUsed\t\tAvailable"
+free -h | awk 'NR==2 {print $2 "\t\t" $3 "\t\t"  $7}'
+free | awk 'NR==2 {printf "100%%\t\t%0.2f%%\t\t%0.2f%%\n", ($3/$2)*100, ($7/$2)*100}'
+
+echo "--------------"
+echo -e "CPU Usage |"
+echo "--------------"
+
